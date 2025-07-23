@@ -11,10 +11,18 @@ object RetrofitInstance {
 
     private const val BASE_URL = "https://enm-project-production.up.railway.app/"
 
+
     // Create a logging interceptor
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY // Log request and response bodies
     }
+
+    // Create an OkHttpClient and add the logging interceptor
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor) // Add the interceptor here
+        .build()
+
+
 
     // Create an OkHttpClient and add the logging interceptor
     private val okHttpClient = OkHttpClient.Builder()
@@ -39,7 +47,16 @@ object RetrofitInstance {
     }
 
     // Lazy initialize the API service
+//    val api: EnmEventApiService by lazy {
+//        retrofit.create(EnmEventApiService::class.java)
+//    }
+
     val api: EnmEventApiService by lazy {
-        retrofit.create(EnmEventApiService::class.java)
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client) // Use the OkHttpClient with the interceptor
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(EnmEventApiService::class.java)
     }
 }

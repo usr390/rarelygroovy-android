@@ -1,6 +1,7 @@
 package com.example.rarelygroovy
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.rarelygroovy.ui.theme.RarelygroovyTheme
+// Import your ViewModel
+import com.example.rarelygroovy.ui.eventlist.EventListViewModel
+import com.example.rarelygroovy.ui.theme.RarelygroovyTheme
+// Import for viewModel()
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,11 +37,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun EventListScreen(name: String, modifier: Modifier = Modifier) {
+fun EventListScreen(name: String, modifier: Modifier = Modifier, eventListViewModel: EventListViewModel = viewModel()) {
     Text(
         text = "Upcoming Events",
         modifier = modifier
     )
+    // You can add a Log here to confirm EventListScreen is composed
+    Log.d("EventListScreen", "EventListScreen composed, ViewModel should be active.")
 }
 
 @Preview(showBackground = true)
